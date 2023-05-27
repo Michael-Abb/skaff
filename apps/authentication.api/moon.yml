@@ -1,0 +1,29 @@
+type: 'tool'
+language: 'go'
+
+project:
+  name: 'authentication.api'
+  description: 'An end to end feature rich authentication api written in go.'
+  channel: '#auth'
+  owner: 'skaff.auth'
+  maintainers: ['michael.abbott']
+
+tasks:
+  tests:
+    command: 
+      - 'go'
+      - 'test'
+      - '-v'
+      - './...'
+  build:
+    command: 
+      - 'go'
+      - 'build'
+      - '-o' 
+      - './bin/auth_service'
+      - './cmd/auth_api'
+  format: 
+    command: 
+      - 'go'
+      - 'fmt'
+      - './...'
