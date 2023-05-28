@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/render"
 )
 
 type API struct {
@@ -19,12 +20,16 @@ func (a *API) SetupV1() (*chi.Mux, error) {
 	a.r.Use(middleware.RealIP)
 	a.r.Use(middleware.Logger)
 	a.r.Use(middleware.Recoverer)
+    a.r.Use(render.SetContentType(render.ContentTypeJSON))
 
 	ah := NewAuth(a.acc)
 
 	a.r.Route("/api/v1", func(r chi.Router) {
 		r.Get("/heartbeat", a.heartbeat)
-		r.Get("/auth/login", ah.Login)
+        r.Route("/auth", func(r chi.Router) {
+		    r.Post("/login", ah.Login)
+            r.Post("/signup", ah.Signup)
+        })
 	})
 
 	return a.r, nil
